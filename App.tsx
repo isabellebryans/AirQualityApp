@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import SignIn from "./src/screens/SignIn";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DisplayImage from "./src/screens/AQI_image";
-import ViewHistory from "./src/screens/history";
+import ViewHistory from "./src/screens/History";
 
 const Stack = createNativeStackNavigator();
 
