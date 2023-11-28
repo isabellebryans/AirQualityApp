@@ -57,11 +57,13 @@ function ViewHistory(){
                 }
                 
             });
+            setDataPoints(newDataPoints);
             console.log('Readings are', newDataPoints);
 
           } catch (error) {
             console.error('Error querying Firestore:', error);
           }
+        
     }
     
     useEffect(() => {
@@ -70,10 +72,51 @@ function ViewHistory(){
       }, []);
 
 
-    return (<View>
-        	<Text>This is the Air Quality measurements from the last 24 hours.</Text>
-            
-            </View>)
-}
+      const renderLineChart = () => {
+        if (dataPoints.length === 0) {
+          return <Text>Loading data...</Text>; // or any other loading indicator
+        }
+    
+        return (
+          <LineChart
+            data={{
+              labels: dataPoints.map((point) => point.x),
+              datasets: [
+                {
+                  data: dataPoints.map((point) => point.y),
+                },
+              ],
+            }}
+            width={300} // Adjust the width as needed
+            height={200} // Adjust the height as needed
+            yAxisLabel="PM2.5" // Customize the Y-axis label
+            chartConfig={{
+              backgroundColor: '#e26a00',
+              backgroundGradientFrom: '#fb8c00',
+              backgroundGradientTo: '#ffa726',
+              decimalPlaces: 2, // Number of decimal places for Y-axis labels
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+              propsForDots: {
+                r: '6',
+                strokeWidth: '2',
+                stroke: '#ffa726',
+              },
+            }}
+            bezier
+          />
+        );
+      };
+    
+      return (
+        <View>
+          <Text>This is the Air Quality measurements from the last 24 hours.</Text>
+          {renderLineChart()}
+        </View>
+      );
+    }
 
 export default ViewHistory;
