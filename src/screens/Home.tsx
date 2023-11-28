@@ -249,47 +249,81 @@ const findClosestMonitor = async (latitude, longitude) => {
         // Clear the interval when the component is unmounted
         return () => clearInterval(intervalId);
       }, []);
-   return (
-       <View style={styles.container}>
-         <Text>Welcome Home!</Text>
-         <View
-           style={{marginTop: 10, padding: 10, borderRadius: 10, width: '40%'}}>
-           <Button
-            title="Get Air Quality"
-            // log location, and air quality
-            onPress={getLocation}/>
-         </View>
-         <View>
-            <Text>Location:</Text>
-         </View>
-         <Text>Latitude: {location ? location.coords.latitude : null}</Text>
-         <Text>Longitude: {location ? location.coords.longitude : null}</Text>
-         <View>
-         <Text>Closest Air Quality Monitor:</Text>
-         <Text>Serial Number: {closestMonitor ? closestMonitor : 'No monitor found'}</Text>
-         <Text>Location: {closestMonitor ? closestMonitorLocation : 'No monitor found'} </Text>
-         <Text>PM2.5 Value: {pm25Value !== null ? pm25Value : 'No data available'}</Text>
-         </View>
-        
-        <Button
-            title="See AQI graph"
-            onPress={() => navigation.navigate('AQI Graph')}/>
-        <Button
-            title="See history"
-            onPress={() => navigation.navigate('History')}/>
-       </View>
-     );};
+      return (
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text>Welcome Home!</Text>
+          </View>
+      
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Get Air Quality"
+              onPress={getLocation}
+            />
+          </View>
+      
+          <View style={styles.locationContainer}>
+            <Text style={styles.headerText}>Location:</Text>
+            <Text>Latitude: {location ? location.coords.latitude : null}</Text>
+            <Text>Longitude: {location ? location.coords.longitude : null}</Text>
+          </View>
+      
+          <View style={styles.monitorContainer}>
+            <Text style={styles.headerText}>Closest Air Quality Monitor:</Text>
+            <Text>Serial Number: {closestMonitor ? closestMonitor : 'No monitor found'}</Text>
+            <Text>Location: {closestMonitor ? closestMonitorLocation : 'No monitor found'}</Text>
+            <Text>PM2.5 Value: {pm25Value !== null ? pm25Value : 'No data available'}</Text>
+          </View>
+      
+          <View style={styles.bottomButtons}>
+            <Button
+              title="See AQI graph"
+              onPress={() => navigation.navigate('AQI Graph')}
+            />
+            <Button
+              title="See history"
+              onPress={() => navigation.navigate('History')}
+            />
+          </View>
+        </View>
+      );};
   
 
-const styles = StyleSheet.create({
- container: {
-   flex: 1,
-   backgroundColor: '#fff',
-   alignItems: 'center',
-   justifyContent: 'center',
- },
-});
-
+      const styles = StyleSheet.create({
+        container: {
+          flex: 1,
+          backgroundColor: '#fff',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 20,
+        },
+        header: {
+          marginBottom: 20,
+        },
+        buttonContainer: {
+          alignItems: 'center',
+          marginTop: 20,
+          marginBottom: 20,
+        },
+        locationContainer: {
+          alignItems: 'center',
+          marginBottom: 20,
+        },
+        monitorContainer: {
+          alignItems: 'center',
+          marginBottom: 20,
+        },
+        headerText: {
+          fontWeight: 'bold',
+          marginBottom: 10,
+        },
+        bottomButtons: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '100%',
+        },
+      });
+      
 
 export default Home;
     
