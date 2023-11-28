@@ -39,10 +39,11 @@ const requestLocationPermission = async () => {
   }
 };
 
-const App = () => {
+const Home = () => {
 // state to hold location
   const [location, setLocation] = useState(false);
   const [closestMonitor, setClosestMonitor] = useState(null);
+  const [closestMonitorLocation, setClosestMonitorLocation] = useState(null);
   const [currentTimestamp, setCurrentTimestamp] = useState(null);
   const [OldTimestamp, setOldTimestamp] = useState(null);
   const [pm25Value, setPm25Value] = useState(null);
@@ -63,6 +64,7 @@ const App = () => {
             const twoHoursAgoUnixTimestamp = Math.floor(twoHoursAgoTimestampMilliseconds / 1000);
           setOldTimestamp(twoHoursAgoUnixTimestamp);
         };
+
   // function to check permissions and get Location
   const getLocation = () => {
     const result = requestLocationPermission();
@@ -84,7 +86,6 @@ const App = () => {
              const pm25 = pm25Value; // Ensure you have the right pm25Value
              const monitor = closestMonitor; // Ensure you have the right closestMonitor
              sendAirQualityDataToFirestore(pm25, monitor);
-
              },
           error => {
             // See error code charts below.
@@ -122,17 +123,17 @@ const findClosestMonitor = async (latitude, longitude) => {
         if (distance < closestDistance) {
           closestDistance = distance;
           closestMonitorSerialNumber = monitorData.serial_number;
+          setClosestMonitorLocation(monitorData.location);
           console.log('monitor: ', closestMonitorSerialNumber);
         }
       }
     });
-
-
     setClosestMonitor(closestMonitorSerialNumber); // Now it includes the closest monitor's serial_number
   } catch (error) {
     console.error('Error querying Firestore:', error);
   }
 };
+
 
 
     const calculateHaversineDistance = (lat1, lon1, lat2, lon2) => {
@@ -145,6 +146,12 @@ const findClosestMonitor = async (latitude, longitude) => {
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       return earthRadius * c;
     };
+
+    // You can call this function to send the HTTP request
+    const sendHttpRequestToAPI = () => {
+        // Ensure that you have valid values for currentTimestamp, oldTimestamp, and closestMonitorSerialNumber
+        sendHttpRequest(currentTimestamp, OldTimestamp, closestMonitor);
+      };
 
     const sendHttpRequest = async (currentTimestamp, oldTimestamp, closestMonitorSerialNumber) => {
       const apiUrl = 'https://data.smartdublin.ie/sonitus-api/api/data';
@@ -230,12 +237,6 @@ const findClosestMonitor = async (latitude, longitude) => {
         });
     };
 
-    // You can call this function to send the HTTP request
-    const sendHttpRequestToAPI = () => {
-      // Ensure that you have valid values for currentTimestamp, oldTimestamp, and closestMonitorSerialNumber
-      sendHttpRequest(currentTimestamp, OldTimestamp, closestMonitor);
-    };
-
     useEffect(() => {
         // Call getLocation initially
         getLocation();
@@ -253,16 +254,29 @@ const findClosestMonitor = async (latitude, longitude) => {
          <Text>Welcome Home!</Text>
          <View
            style={{marginTop: 10, padding: 10, borderRadius: 10, width: '40%'}}>
-           <Button title="Get Location" onPress={getLocation} />
+           <Button
+            title="Get Air Quality"
+            // log location, and air quality
+            onPress={getLocation}/>
+         </View>
+         <View>
+            <Text>Location:</Text>
          </View>
          <Text>Latitude: {location ? location.coords.latitude : null}</Text>
          <Text>Longitude: {location ? location.coords.longitude : null}</Text>
-         <Text>Closest Monitor: {closestMonitor ? closestMonitor : 'No monitor found'}</Text>
-        <Text>Current Timestamp: {currentTimestamp}</Text>
-           <Text>PM2.5 Value: {pm25Value !== null ? pm25Value : 'No data available'}</Text>
+         <View>
+         <Text>Closest Air Quality Monitor:</Text>
+         <Text>Serial Number: {closestMonitor ? closestMonitor : 'No monitor found'}</Text>
+         <Text>Location: {closestMonitor ? closestMonitorLocation : 'No monitor found'} </Text>
+         <Text>PM2.5 Value: {pm25Value !== null ? pm25Value : 'No data available'}</Text>
+         </View>
+        
         <Button
             title="See AQI graph"
             onPress={() => navigation.navigate('AQI Graph')}/>
+        <Button
+            title="See history"
+            onPress={() => navigation.navigate('History')}/>
        </View>
      );};
   
@@ -277,5 +291,5 @@ const styles = StyleSheet.create({
 });
 
 
-export default App;
+export default Home;
     
