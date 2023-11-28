@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "322059068872",
+    "project_id": "airqualitytracker-d02dd",
+    "storage_bucket": "airqualitytracker-d02dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:322059068872:android:9fc8a8b953cf06afc08cfd",
+        "android_client_info": {
+          "package_name": "com.airqualityapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCl1StpztOTY80Z7IfZGdb71hMgM0LK4fk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
