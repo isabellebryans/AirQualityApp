@@ -1,8 +1,6 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+This is an Android app that monitors users' daily exposure to Air Pollution by accessing the local GPS data, and querying the Smart Dublin Sonitus API (https://data.smartdublin.ie/dataset/sonitus) for real-time Air Quality readings from monitors around Dublin City. The data is stored in a Google Firebase Firestore.
 
 # Getting Started
-
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
 
